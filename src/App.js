@@ -1,17 +1,23 @@
+import { act, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 const initialGoals = [
   {
+    id: uuidv4(),
     name: "reading",
     time: 60,
     image:
       "https://images.pexels.com/photos/159866/books-book-pages-read-literature-159866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
+    id: uuidv4(),
     name: "working out",
     time: 30,
     image:
       "https://images.pexels.com/photos/703014/pexels-photo-703014.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
+    id: uuidv4(),
     name: "studying React",
     time: 60,
     image:
@@ -20,14 +26,18 @@ const initialGoals = [
 ];
 
 export default function App() {
+  const [goals, setGoals] = useState(initialGoals);
+  function handleAddingNewActivity(activity) {
+    setGoals((goals) => [...goals, activity]);
+  }
   return (
     <>
       <Header />
       <div className="app">
         <div className="sidebar">
-          <GoalList />
+          <GoalList goals={goals} />
 
-          <AddGoalForm />
+          <AddGoalForm handleAddingNewActivity={handleAddingNewActivity} />
           <button className="button">Add Goal</button>
         </div>
         <div className="main-content">
@@ -48,23 +58,34 @@ function Goal({ goal }) {
     </li>
   );
 }
-function GoalList() {
+function GoalList({ goals }) {
   return (
     <div>
       <ul>
         {" "}
-        {initialGoals.map((item) => (
-          <Goal goal={item} />
+        {goals.map((goal) => (
+          <Goal key={goal.id} goal={goal} />
         ))}
       </ul>
     </div>
   );
 }
-function AddGoalForm() {
+function AddGoalForm({ handleAddingNewActivity }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  function createNewGoalItem(e) {
+    e.preventDefault(); // Prevent form submission from reloading the page
+    const newGoal = { id: uuidv4(), name, time: 30, image }; // Generate a new goal with a unique ID
+    handleAddingNewActivity(newGoal);
+    setName(""); // Clear the input fields
+    setImage("");
+  }
   return (
-    <form className="form-add-friend">
-      Goal name: <input />
-      Motivating image: <input />
+    <form className="form-add-friend" onSubmit={createNewGoalItem}>
+      Goal name:{" "}
+      <input value={name} onChange={(e) => setName(e.target.value)} />
+      Motivating image:{" "}
+      <input value={image} onChange={(e) => setImage(e.target.value)} />
       <button className="button">Add</button>
     </form>
   );

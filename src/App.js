@@ -27,6 +27,7 @@ const initialGoals = [
 
 export default function App() {
   const [goals, setGoals] = useState(initialGoals);
+  const [isAddGoalClicked, setIsAddGoalClicked] = useState(false);
   function handleAddingNewActivity(activity) {
     setGoals((goals) => [...goals, activity]);
   }
@@ -36,9 +37,15 @@ export default function App() {
       <div className="app">
         <div className="sidebar">
           <GoalList goals={goals} />
-
-          <AddGoalForm handleAddingNewActivity={handleAddingNewActivity} />
-          <button className="button">Add Goal</button>
+          {isAddGoalClicked && (
+            <AddGoalForm handleAddingNewActivity={handleAddingNewActivity} />
+          )}
+          <button
+            className="button"
+            onClick={() => setIsAddGoalClicked((e) => !e)}
+          >
+            {isAddGoalClicked ? "Close" : "Add Goal"}
+          </button>
         </div>
         <div className="main-content">
           <UpdateGoalForm />

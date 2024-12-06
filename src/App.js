@@ -28,15 +28,24 @@ const initialGoals = [
 export default function App() {
   const [goals, setGoals] = useState(initialGoals);
   const [isAddGoalClicked, setIsAddGoalClicked] = useState(false);
+  //const [isSelectClicked, setSelectClicked] = useState(false);
+  const [selectedGoal, setSelectedGoal] = useState(null);
   function handleAddingNewActivity(activity) {
     setGoals((goals) => [...goals, activity]);
+  }
+  function handleSelection(goal) {
+    setSelectedGoal((cur) => (cur?.id === goal.id ? null : goal));
   }
   return (
     <>
       <Header />
       <div className="app">
         <div className="sidebar">
-          <GoalList goals={goals} />
+          <GoalList
+            goals={goals}
+            selectedGoal={selectedGoal}
+            onSelection={handleSelection}
+          />
           {isAddGoalClicked && (
             <AddGoalForm handleAddingNewActivity={handleAddingNewActivity} />
           )}
@@ -47,9 +56,7 @@ export default function App() {
             {isAddGoalClicked ? "Close" : "Add Goal"}
           </button>
         </div>
-        <div className="main-content">
-          <UpdateGoalForm />
-        </div>
+        <div className="main-content">{selectedGoal && <UpdateGoalForm />}</div>
       </div>
     </>
   );
@@ -57,21 +64,30 @@ export default function App() {
 function Header() {
   return <div className="header">Goal Tracker</div>;
 }
-function Goal({ goal }) {
+function Goal({ goal, onSelection, selectedGoal }) {
+  const isSelected = selectedGoal?.id === goal.id;
   return (
     <li>
       <img src={goal.image} alt={goal.name} />
-      <h3>{goal.name}</h3> <button className="button">Select</button>
+      <h3>{goal.name}</h3>{" "}
+      <button className="button" onClick={() => onSelection(goal)}>
+        {isSelected ? "Close" : "Select"}
+      </button>
     </li>
   );
 }
-function GoalList({ goals }) {
+function GoalList({ goals, onSelection, selectedGoal }) {
   return (
     <div>
       <ul>
         {" "}
         {goals.map((goal) => (
-          <Goal key={goal.id} goal={goal} />
+          <Goal
+            key={goal.id}
+            goal={goal}
+            onSelection={onSelection}
+            selectedGoal={selectedGoal}
+          />
         ))}
       </ul>
     </div>

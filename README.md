@@ -6,8 +6,14 @@ This is how the website looks in the beginning:
 ![](Diagrams/Initial.png)
 
 Now, we want to add another goal by clicking "Add Goal". Note that the "Add Goal" button changes to "Close" when the form is opened:
+![](Diagrams/AddGoalClicked.png)
 
-We add painting as another activity, and od course, include the motivational image.
+We add painting as another activity, and of course, include the motivational image.
+![](Diagrams/PaintingInfoEntered.png)
+![](Diagrams/PaintingAdded.png)
 
 Next, we want to change our goal for working out from 30 to 60 minutes/day. We can update the information by clicking on the "Select" button. Note that the form where we update the info doesn't use the general "Upadte Norm", but instead "Update {activityName} norm"
+![](Diagrams/UpdatedNormWidnowOpened.png)
+![](Diagrams/WorkingOutUpdated.png)
+
 
